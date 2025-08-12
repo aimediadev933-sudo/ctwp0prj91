@@ -1,1 +1,793 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DAIF - Smart Greenhouse Technology</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #423D9B;
+            --secondary: #6251B5;
+            --secondary-dark: #2D1B47;
+            --orange: #F28C28;
+            --magenta: #E81C64;
+            --dark-teal: #0E4C68;
+            --body: #F2F2F2;
+            --text: #1D1D1B;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background: var(--body);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 2rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .logos {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 3rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            height: 60px;
+            width: auto;
+            filter: brightness(0) invert(1);
+            transition: all 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.1);
+            filter: brightness(0) invert(1) drop-shadow(0 0 10px rgba(255,255,255,0.5));
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 1.3rem;
+            opacity: 0.9;
+            margin-bottom: 1rem;
+        }
+
+        .project-info {
+            text-align: center;
+            font-size: 1rem;
+            opacity: 0.8;
+        }
+
+        /* Navigation */
+        nav {
+            background: var(--secondary-dark);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        .nav-item {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background: var(--orange);
+            transform: translateY(-2px);
+        }
+
+        /* Main Content */
+        main {
+            padding: 3rem 0;
+        }
+
+        .section {
+            margin-bottom: 4rem;
+            background: white;
+            padding: 3rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--orange), var(--magenta), var(--primary));
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 2rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 50%;
+            height: 3px;
+            background: var(--orange);
+            border-radius: 2px;
+        }
+
+        /* Overview Cards */
+        .overview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .overview-card {
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .overview-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .overview-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            transform: rotate(45deg);
+            transition: all 0.3s ease;
+        }
+
+        .overview-card:hover::before {
+            transform: rotate(45deg) translate(10px, 10px);
+        }
+
+        .card-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .card-description {
+            position: relative;
+            z-index: 2;
+            opacity: 0.9;
+        }
+
+        /* Features Grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .feature-item {
+            background: linear-gradient(135deg, #fff, #f8f9fa);
+            padding: 2rem;
+            border-radius: 12px;
+            border-left: 4px solid var(--orange);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .feature-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .feature-item:nth-child(even) {
+            border-left-color: var(--magenta);
+        }
+
+        .feature-item:nth-child(3n) {
+            border-left-color: var(--primary);
+        }
+
+        .feature-title {
+            color: var(--primary);
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        /* Partners */
+        .partners-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .partner-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .partner-card:hover {
+            border-color: var(--orange);
+            transform: translateY(-3px);
+        }
+
+        .partner-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(242, 140, 40, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .partner-card:hover::before {
+            left: 100%;
+        }
+
+        /* Challenges */
+        .challenges-list {
+            display: grid;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .challenge-item {
+            background: linear-gradient(135deg, #fff3f3, #ffe8e8);
+            padding: 2rem;
+            border-radius: 12px;
+            border-left: 4px solid var(--magenta);
+            position: relative;
+        }
+
+        .challenge-title {
+            color: var(--magenta);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Future Directions */
+        .future-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .future-item {
+            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+            padding: 2rem;
+            border-radius: 12px;
+            border-top: 4px solid var(--dark-teal);
+            transition: transform 0.3s ease;
+        }
+
+        .future-item:hover {
+            transform: scale(1.02);
+        }
+
+        .future-title {
+            color: var(--dark-teal);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        /* SDGs */
+        .sdg-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .sdg-item {
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            color: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: 600;
+            transition: transform 0.3s ease;
+        }
+
+        .sdg-item:hover {
+            transform: scale(1.05);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--secondary-dark);
+            color: white;
+            padding: 3rem 0;
+            text-align: center;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            color: var(--orange);
+            margin-bottom: 1rem;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section {
+            animation: fadeInUp 0.6s ease;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .section {
+                padding: 2rem 1rem;
+            }
+            
+            .logos {
+                gap: 1.5rem;
+            }
+            
+            .logo {
+                height: 45px;
+            }
+            
+            .nav-container {
+                gap: 1rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-bg"></div>
+        <div class="container">
+            <div class="header-content">
+                <div class="logos">
+                    <img src="images/logos/tein-logo.png" alt="TEIN*CC" class="logo">
+                    <img src="images/logos/asia-connect-logo.png" alt="Asia@Connect" class="logo">
+                    <img src="images/logos/eu-logo.png" alt="European Union" class="logo">
+                </div>
+                <h1>DAIF Project</h1>
+                <p class="subtitle">Digital Artificial Intelligence-based Futuristic Remote Sensing Products for Smart Greenhouse</p>
+                <p class="project-info">6 Targeted Call • WP2 • Cambodia Initiative</p>
+            </div>
+        </div>
+    </header>
+
+    <nav>
+        <div class="container">
+            <div class="nav-container">
+                <a href="#overview" class="nav-item active">Overview</a>
+                <a href="#objectives" class="nav-item">Objectives</a>
+                <a href="#activities" class="nav-item">Activities</a>
+                <a href="#outcomes" class="nav-item">Outcomes</a>
+                <a href="#partners" class="nav-item">Partners</a>
+                <a href="#challenges" class="nav-item">Challenges</a>
+                <a href="#future" class="nav-item">Future</a>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <div class="container">
+            <section id="overview" class="section">
+                <h2 class="section-title">Project Overview</h2>
+                <p>The DAIF project revolutionizes agricultural productivity in Cambodia through an innovative smart greenhouse management system. By integrating cutting-edge remote sensors, wireless LoRa communication, and semi-automated fertigation/irrigation functions via a comprehensive web platform, we're transforming digital agriculture for students, farmers, and agri-tech stakeholders.</p>
+                
+                <div class="overview-grid">
+                    <div class="overview-card">
+                        <div class="card-icon">🌱</div>
+                        <h3 class="card-title">Smart Agriculture</h3>
+                        <p class="card-description">AI-powered greenhouse systems for optimal crop monitoring and resource management</p>
+                    </div>
+                    <div class="overview-card">
+                        <div class="card-icon">📡</div>
+                        <h3 class="card-title">LoRa Technology</h3>
+                        <p class="card-description">Long-range wireless communication enabling data transfer up to 500m without internet</p>
+                    </div>
+                    <div class="overview-card">
+                        <div class="card-icon">💧</div>
+                        <h3 class="card-title">Automated Systems</h3>
+                        <p class="card-description">Semi-automated fertigation and irrigation with precise resource calculations</p>
+                    </div>
+                    <div class="overview-card">
+                        <div class="card-icon">👥</div>
+                        <h3 class="card-title">Knowledge Transfer</h3>
+                        <p class="card-description">Comprehensive training programs for farmers and students across Cambodia</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="objectives" class="section">
+                <h2 class="section-title">Project Objectives</h2>
+                <div class="features-grid">
+                    <div class="feature-item">
+                        <h3 class="feature-title">Primary Goal</h3>
+                        <p>Build a data-driven smart greenhouse system enabling real-time crop monitoring and automated fertigation/irrigation through AI-integrated sensors and web control.</p>
+                    </div>
+                    <div class="feature-item">
+                        <h3 class="feature-title">DAIF Control Development</h3>
+                        <p>Develop sensor-based DAIF control boxes with comprehensive environmental monitoring capabilities.</p>
+                    </div>
+                    <div class="feature-item">
+                        <h3 class="feature-title">Wireless Communication</h3>
+                        <p>Enable wireless LoRa-based communication for reliable data transmission across farm areas.</p>
+                    </div>
+                    <div class="feature-item">
+                        <h3 class="feature-title">Web Integration</h3>
+                        <p>Integrate web-based fertigation tools for intelligent resource management and decision support.</p>
+                    </div>
+                    <div class="feature-item">
+                        <h3 class="feature-title">Capacity Building</h3>
+                        <p>Train farmers and students on DAIF system operation and smart agriculture practices.</p>
+                    </div>
+                    <div class="feature-item">
+                        <h3 class="feature-title">Sustainability</h3>
+                        <p>Ensure long-term sustainability through Public-Private Partnerships and commercialization strategies.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="activities" class="section">
+                <h2 class="section-title">Key Activities</h2>
+                <div class="features-grid">
+                    <div class="feature-item">
+                        <h3 class="feature-title">Control Box Development</h3>
+                        <p>Designed and assembled 4 control boxes equipped with 10 environmental sensors to monitor soil and air conditions for precise agricultural decisions.</p>
+                    </div>
+                    <div class="feature-item">
+                        <h3 class="feature-title">LoRa Communication System</h3>
+                        <p>Built bandwidth systems enabling data transfer between devices over 500m using LoRa technology, functioning even without internet connectivity.</p>
+                    </div>
+                    <div class="feature-item">
+                        <h3 class="feature-title">Fertigation Integration</h3>
+                        <p>Created and embedded fertigation and irrigation calculation functions into v-gro.com to help estimate resource requirements semi-automatically.</p>
+                    </div>
+                    <div class="feature-item">
+                        <h3 class="feature-title">Demonstration Greenhouse</h3>
+                        <p>Constructed a demonstration greenhouse in Kandal province, planted 5 crop varieties, and operated using the DAIF system.</p>
+                    </div>
+                    <div class="feature-item">
+                        <h3 class="feature-title">Training Programs</h3>
+                        <p>Conducted 10-day training for 5 students and 5 farmers, followed by additional training in Takeo province with 20 more farmers.</p>
+                    </div>
+                    <div class="feature-item">
+                        <h3 class="feature-title">National Workshop</h3>
+                        <p>Held a national workshop with 45 attendees, including researchers, farmers, and private sector representatives to showcase project outcomes.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="outcomes" class="section">
+                <h2 class="section-title">Key Outcomes</h2>
+                <div class="features-grid">
+                    <div class="feature-item">
+                        <h3 class="feature-title">DAIF Systems Deployed</h3>
+                        <p>Four smart sensor-based control boxes were successfully developed and deployed in greenhouses to enable data-informed agriculture.</p>
+                    </div>
+                    <div class="feature-item">
+                        <h3 class="feature-title">Wireless Communication Success</h3>
+                        <p>Devices were connected using LoRa communication, transferring data over a 500m range without the need for internet connectivity.</p>
+                    </div>
+                    <div class="feature-item">
+                        <h3 class="feature-title">Web Platform Integration</h3>
+                        <p>Fertigation and irrigation functions were built into the v-gro.com platform to support semi-automated decision-making processes.</p>
+                    </div>
+                    <div class="feature-item">
+                        <h3 class="feature-title">Knowledge Transfer Achievement</h3>
+                        <p>Farmers and students were trained in system use, enhancing agri-tech literacy and practical competence across Cambodia.</p>
+                    </div>
+                    <div class="feature-item">
+                        <h3 class="feature-title">Stakeholder Engagement</h3>
+                        <p>The public workshop increased awareness among academia, SMEs, and farming communities about smart agriculture technologies.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="partners" class="section">
+                <h2 class="section-title">Partner Organizations</h2>
+                <div class="partners-grid">
+                    <div class="partner-card">
+                        <h3>Institute of Technology of Cambodia (ITC)</h3>
+                        <p>Lead technical institution providing research expertise and infrastructure</p>
+                    </div>
+                    <div class="partner-card">
+                        <h3>Royal University of Agriculture (RUA)</h3>
+                        <p>Agricultural research and education partner</p>
+                    </div>
+                    <div class="partner-card">
+                        <h3>Khmer Modern Farming</h3>
+                        <p>Private sector partner for modern farming techniques</p>
+                    </div>
+                    <div class="partner-card">
+                        <h3>ITALab</h3>
+                        <p>Technology development and innovation laboratory</p>
+                    </div>
+                    <div class="partner-card">
+                        <h3>Cambodian Quality Horticulture (CQH)</h3>
+                        <p>Quality assurance and horticulture expertise</p>
+                    </div>
+                    <div class="partner-card">
+                        <h3>Khmer Organic Cooperatives (KOC)</h3>
+                        <p>Organic farming cooperative network</p>
+                    </div>
+                    <div class="partner-card">
+                        <h3>Eco Agri Center (EAC)</h3>
+                        <p>Sustainable agriculture and environmental solutions</p>
+                    </div>
+                    <div class="partner-card">
+                        <h3>TEIN*CC</h3>
+                        <p>Network infrastructure and connectivity support</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="challenges" class="section">
+                <h2 class="section-title">Challenges & Gaps</h2>
+                <div class="challenges-list">
+                    <div class="challenge-item">
+                        <h3 class="challenge-title">Language Accessibility</h3>
+                        <p>The system's English-only interface limits access and usability for Khmer-speaking farmers, creating a significant barrier to adoption.</p>
+                    </div>
+                    <div class="challenge-item">
+                        <h3 class="challenge-title">Technical Complexity</h3>
+                        <p>Fertigation and irrigation tools require detailed technical data unfamiliar to non-experts, making operation challenging for traditional farmers.</p>
+                    </div>
+                    <div class="challenge-item">
+                        <h3 class="challenge-title">Communication Range Limitations</h3>
+                        <p>Though 500m range was achieved, wireless signals weaken in dense vegetation or with physical obstructions, limiting deployment flexibility.</p>
+                    </div>
+                    <div class="challenge-item">
+                        <h3 class="challenge-title">Digital Literacy Gap</h3>
+                        <p>Many farmers experience difficulty operating the technology without significant training support and ongoing technical assistance.</p>
+                    </div>
+                    <div class="challenge-item">
+                        <h3 class="challenge-title">Limited AI Integration</h3>
+                        <p>While semi-automated, the system lacks advanced AI features like disease detection, pest identification, or nutrient deficiency analysis.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="future" class="section">
+                <h2 class="section-title">Future Directions</h2>
+                <div class="future-grid">
+                    <div class="future-item">
+                        <h3 class="future-title">Khmer Language Support</h3>
+                        <p>Localizing the interface and tutorials in Khmer will significantly improve accessibility for rural users and increase adoption rates.</p>
+                    </div>
+                    <div class="future-item">
+                        <h3 class="future-title">Mobile Applications</h3>
+                        <p>Developing Android/iOS apps will enhance user interaction, especially for farmers with smartphones, providing on-the-go monitoring capabilities.</p>
+                    </div>
+                    <div class="future-item">
+                        <h3 class="future-title">AI-Driven Features</h3>
+                        <p>Incorporating modules for pest detection, disease identification, and irrigation prediction will improve automation and accuracy significantly.</p>
+                    </div>
+                    <div class="future-item">
+                        <h3 class="future-title">Expanded Demonstrations</h3>
+                        <p>More on-ground demos and workshops across provinces will increase adoption and scale, reaching more farming communities nationwide.</p>
+                    </div>
+                    <div class="future-item">
+                        <h3 class="future-title">Commercialization via PPP</h3>
+                        <p>Explore business models with ITC and local firms to make DAIF systems widely available through sustainable market mechanisms.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2 class="section-title">Relevant SDGs</h2>
+                <div class="sdg-grid">
+                    <div class="sdg-item">SDG 2: Zero Hunger</div>
+                    <div class="sdg-item">SDG 9: Industry, Innovation and Infrastructure</div>
+                    <div class="sdg-item">SDG 12: Responsible Consumption and Production</div>
+                    <div class="sdg-item">SDG 13: Climate Action</div>
+                    <div class="sdg-item">SDG 17: Partnerships for the Goals</div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Project Information</h3>
+                    <p>DAIF - Smart Greenhouse Technology</p>
+                    <p>6 Targeted Call • WP2</p>
+                    <p>Cambodia Initiative</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Key Partners</h3>
+                    <p>Institute of Technology of Cambodia</p>
+                    <p>Royal University of Agriculture</p>
+                    <p>TEIN*CC Cooperation Center</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Supported By</h3>
+                    <p>Asia@Connect Programme</p>
+                    <p>European Union</p>
+                    <p>TEIN*CC Network</p>
+                </div>
+            </div>
+            <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 2rem; margin-top: 2rem;">
+                <p>&copy; 2024 DAIF Project. Digital Agriculture Innovation for Cambodia's Future.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling for navigation
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+                
+                // Update active nav item
+                document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Update active nav item on scroll
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('.section');
+            const navItems = document.querySelectorAll('.nav-item');
+            
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (scrollY >= sectionTop - 200) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navItems.forEach(item => {
+                item.classList.remove('active');
+                if (item.getAttribute('href') === `#${current}`) {
+                    item.classList.add('active');
+                }
+            });
+        });
+
+        // Add animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.feature-item, .partner-card, .challenge-item, .future-item').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'all 0.6s ease';
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
